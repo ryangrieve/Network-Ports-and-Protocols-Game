@@ -33,22 +33,17 @@ ports = {
 print(
     """
 Network Ports and Protocols Game
-
 -----------------------------------------------------------------------
-
 Instructions:
 1) Type the port number for each port/protocol.
 2) Use a slash if a port/protocol has more than two ports. (eg: FTP)
-
 Examples: 20/21, 67/68, 161/162, 5060/5061
-
 -----------------------------------------------------------------------"""
 )
 
-used_ports = []
-
 
 def get_port():
+    used_ports = []
     while True:
         port_name = random.choice(list(ports.keys()))
         port = ports[port_name]
@@ -62,34 +57,35 @@ def get_port():
 
 
 def begin_game():
-    try:
-        num_questions = int(input("\n* How long should the quiz be? "))
-    except Exception:
-        print("\nInvalid quiz length. Please try again.")
-        begin_game()
+    while True:
+        try:
+            num_questions = int(input("\n* How long should the quiz be? "))
+        except Exception:
+            print("\nInvalid quiz length. Please try again.")
+            continue
 
-    score = 0
-    for i in range(num_questions):
-        port, port_name = get_port()
-        answer = input(f"\nWhat is the port number for {port_name}? ")
-        if answer.lower() == str(port):
-            print("\n* Correct!")
-            score += 1
+        score = 0
+        for i in range(num_questions):
+            port, port_name = get_port()
+            answer = input(f"\nWhat is the port number for {port_name}? ")
+            if answer == (port):
+                print("\n* Correct!")
+                score += 1
+            else:
+                print(f"\n* Incorrect. The correct answer is {port}.")
+
+        result = score / num_questions * 100
+        print(f"\nResults:\n---------\n{score}/{num_questions} {result:.2f}%")
+        if result >= 90:
+            print("\nGreat work!")
         else:
-            print(f"\n* Incorrect. The correct answer is {port}.")
+            print("\nKeep practicing!")
 
-    print(f"\nYou got {score}/{num_questions} questions correct.")
-    result = score / num_questions * 100
-    print(f"Result: {result:.2f}%.")
-    if result >= 90:
-        print("\nGreat work!")
-    else:
-        print("\nKeep practicing!")
-    play_again = input("\nDo you want to play again? (y/n) ")
-    if play_again.lower() == "y":
-        begin_game()
-    else:
-        print("\nClosing game...\n")
+        play_again = input("\nDo you want to play again? (y/n) ")
+        if play_again.lower() == "y":
+            continue
+        else:
+            quit("\nClosing game...\n")
 
 
 begin_game()
